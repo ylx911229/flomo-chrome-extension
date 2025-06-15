@@ -69,7 +69,7 @@ export default function Popup() {
     
     chrome.storage.sync.get(['openrouterKey', 'flomoApiUrl', 'serverUrl'], async (result) => {
       try {
-        const serverUrl = result.serverUrl || 'http://localhost:3001';
+        const serverUrl = result.serverUrl || 'https://flomo-chrome-extension-server.vercel.app';
         
         const response = await fetch(`${serverUrl}/api/summarize-to-flomo`, {
           method: 'POST',
