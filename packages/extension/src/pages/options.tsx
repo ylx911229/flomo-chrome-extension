@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 export default function Options() {
   const [openrouterKey, setOpenrouterKey] = useState('');
   const [flomoApiUrl, setFlomoApiUrl] = useState('');
-  const [serverUrl, setServerUrl] = useState('http://localhost:3001');
+  const [serverUrl, setServerUrl] = useState('https://flomo-chrome-extension-server.vercel.app');
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -122,11 +122,11 @@ export default function Options() {
               type="url"
               value={serverUrl}
               onChange={(e) => setServerUrl(e.target.value)}
-              placeholder="http://localhost:3001"
+              placeholder="https://flomo-chrome-extension-server.vercel.app"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <p className="text-sm text-gray-600 mt-1">
-              后端服务的地址，默认为本地开发环境
+              后端服务的地址，默认为https://flomo-chrome-extension-server.vercel.app
             </p>
           </div>
 
