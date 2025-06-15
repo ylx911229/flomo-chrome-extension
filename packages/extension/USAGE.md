@@ -26,7 +26,7 @@
 2. 填写必要信息：
    - **OpenRouter API Key**: 从 [OpenRouter](https://openrouter.ai/) 获取
    - **Flomo API URL**: 从Flomo应用设置中获取
-   - **服务器地址**: 默认 `http://localhost:3001`
+   - **服务器地址**: 默认 `https://flomo-chrome-extension-server.vercel.app`
 3. 点击"测试配置"验证
 4. 保存设置
 

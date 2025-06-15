@@ -175,7 +175,7 @@ document.getElementById('summarizeBtn').addEventListener('click', () => {
 
     chrome.storage.sync.get(['openrouterKey', 'flomoApiUrl', 'serverUrl'], async (result) => {
         try {
-            const serverUrl = result.serverUrl || 'http://localhost:3001';
+            const serverUrl = result.serverUrl || 'https://flomo-chrome-extension-server.vercel.app';
             
             console.log('=== DEBUG: Before sending request ===');
             console.log('selectedText:', selectedText);

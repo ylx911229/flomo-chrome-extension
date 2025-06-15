@@ -73,7 +73,7 @@ npm run build
 2. 配置以下参数：
    - **OpenRouter API Key**: 在 [OpenRouter](https://openrouter.ai/) 获取
    - **Flomo API URL**: 在Flomo应用设置中获取
-   - **服务器地址**: 默认为 `http://localhost:3001`
+   - **服务器地址**: 默认为 `https://flomo-chrome-extension-server.vercel.app`
 
 3. 点击"测试配置"验证设置是否正确
 4. 保存设置
@@ -196,7 +196,7 @@ MIT License
 
 ### Q: 扩展无法工作怎么办？
 A: 请检查：
-1. 后端服务是否正常运行（访问 http://localhost:3001）
+1. 后端服务是否正常运行（访问 https://flomo-chrome-extension-server.vercel.app）
 2. API密钥是否正确配置
 3. 浏览器控制台是否有错误信息
 

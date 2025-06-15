@@ -30,18 +30,9 @@ async function handleContextMenuClick(info, tab) {
       return false;
     }
     
-    const serverUrl = result.serverUrl || 'http://localhost:3001';
+    const serverUrl = result.serverUrl || 'https://flomo-chrome-extension-server.vercel.app';
     
     try {
-      // Show loading notification
-      const loadingNotificationId = await chrome.notifications.create('flomo-loading', {
-        type: 'basic',
-        iconUrl: 'icons/icon48.png',
-        title: 'Flomo AI 笔记',
-        message: '正在总结内容，请稍候...'
-      });
-      console.log('Background: Loading notification created');
-      
       // Call server API to summarize and save to Flomo
       const response = await fetch(`${serverUrl}/api/summarize-to-flomo`, {
         method: 'POST',
@@ -60,51 +51,37 @@ async function handleContextMenuClick(info, tab) {
       const data = await response.json();
       
       if (response.ok) {
-        // Clear loading notification
-        chrome.notifications.clear('flomo-loading');
-        
-        // Show success notification
-        try {
-          await chrome.notifications.create('flomo-success', {
-            type: 'basic',
-            iconUrl: 'icons/icon48.png',
-            title: 'Flomo AI 笔记',
-            message: '✅ 笔记已成功保存到Flomo！'
-          });
-          return true;
-        } catch (notificationError) {
-          // Fallback: try without icon
-          try {
-            await chrome.notifications.create('flomo-success-fallback', {
-              type: 'basic',
-              title: 'Flomo AI 笔记',
-              message: '✅ 笔记已成功保存到Flomo！'
+        // Show success alert
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs[0]?.id) {
+            chrome.scripting.executeScript({
+              target: { tabId: tabs[0].id },
+              func: () => {
+                alert('✅ 笔记已成功保存到Flomo！');
+              }
             });
-            return true;
-          } catch (fallbackError) {
-            console.error('Background: Failed to create notification:', fallbackError);
-            return false;
           }
-        }
+        });
+        
+        return true;
       } else {
         throw new Error(data.error || '处理失败');
       }
     } catch (error) {
       console.error('Background: Error occurred:', error);
       
-      // Clear loading notification and show error
-      chrome.notifications.clear('flomo-loading');
       
-      try {
-        await chrome.notifications.create('flomo-error', {
-          type: 'basic',
-          iconUrl: 'icons/icon48.png',
-          title: 'Flomo AI 笔记',
-          message: `❌ 错误: ${error.message}`
-        });
-      } catch (notificationError) {
-        console.error('Background: Failed to create error notification:', notificationError);
-      }
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0]?.id) {
+          chrome.scripting.executeScript({
+            target: { tabId: tabs[0].id },
+            func: (errorMessage) => {
+              alert(`❌ 错误: ${errorMessage}`);
+            },
+            args: [error.message]
+          });
+        }
+      });
       
       return false;
     }
