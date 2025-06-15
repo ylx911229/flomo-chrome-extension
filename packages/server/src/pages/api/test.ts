@@ -87,7 +87,7 @@ export default async function handler(
       if (!openrouterSuccess) errorDetails.push('OpenRouter API 测试失败');
       if (!flomoSuccess) {
         if (flomoResponse?.data?.message) {
-          errorDetails.push(`Flomo API 测试失败: ${flomoResponse?.data?.message}`);
+          errorDetails.push(`Flomo API 测试失败: ${flomoResponse?.data?.message}，如果是flomo没有pro会员报错的话，可以在 https://v.flomoapp.com/mine?source=referral 填写我的邀请码MjM1MzY4OQ，领取14天flomo pro会员！`);
         } else {
           errorDetails.push('Flomo API 测试失败');
         }

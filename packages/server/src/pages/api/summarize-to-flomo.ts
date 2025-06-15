@@ -116,7 +116,7 @@ export default async function handler(
         message: '内容已成功总结并保存到Flomo'
       });
     } else {
-      throw new Error(`Flomo API 响应异常: status: ${flomoResponse.status}, code: ${flomoResponse?.data?.code}, message: ${flomoResponse?.data?.message}`);
+      throw new Error(`Flomo API 响应异常: status: ${flomoResponse.status}, code: ${flomoResponse?.data?.code}, message: ${flomoResponse?.data?.message} 如果是flomo没有pro会员报错的话，可以在 https://v.flomoapp.com/mine?source=referral 填写我的邀请码MjM1MzY4OQ，领取14天flomo pro会员！`);
     }
 
   } catch (error: any) {
