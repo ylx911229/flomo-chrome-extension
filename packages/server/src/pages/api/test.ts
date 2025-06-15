@@ -71,8 +71,8 @@ export default async function handler(
     );
 
     console.log('Flomo test response status:', flomoResponse.status);
-    
-    const flomoSuccess = flomoResponse.status === 200 || flomoResponse.status === 201;
+    console.log('Flomo test response data:', flomoResponse.data);
+    const flomoSuccess = (flomoResponse.status === 200 || flomoResponse.status === 201) && flomoResponse?.data?.code === 0;
     console.log('Flomo success:', flomoSuccess);
 
     if (openrouterSuccess && flomoSuccess) {
@@ -85,7 +85,13 @@ export default async function handler(
     } else {
       let errorDetails = [];
       if (!openrouterSuccess) errorDetails.push('OpenRouter API 测试失败');
-      if (!flomoSuccess) errorDetails.push('Flomo API 测试失败');
+      if (!flomoSuccess) {
+        if (flomoResponse?.data?.message) {
+          errorDetails.push(`Flomo API 测试失败: ${flomoResponse?.data?.message}`);
+        } else {
+          errorDetails.push('Flomo API 测试失败');
+        }
+      }
       throw new Error(`测试失败: ${errorDetails.join(', ')}`);
     }
 

@@ -109,14 +109,14 @@ export default async function handler(
 
     console.log('Flomo response status:', flomoResponse.status);
 
-    if (flomoResponse.status === 200 || flomoResponse.status === 201) {
+    if ((flomoResponse.status === 200 || flomoResponse.status === 201) && flomoResponse?.data?.code === 0) {
       res.status(200).json({ 
         success: true, 
         summary,
         message: '内容已成功总结并保存到Flomo'
       });
     } else {
-      throw new Error(`Flomo API 响应异常: ${flomoResponse.status}`);
+      throw new Error(`Flomo API 响应异常: status: ${flomoResponse.status}, code: ${flomoResponse?.data?.code}, message: ${flomoResponse?.data?.message}`);
     }
 
   } catch (error: any) {
