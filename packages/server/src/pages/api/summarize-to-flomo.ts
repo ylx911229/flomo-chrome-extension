@@ -46,7 +46,7 @@ export default async function handler(
     const openrouterResponse = await axios.post<OpenRouterResponse>(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'deepseek/deepseek-r1',
+        model: 'deepseek/deepseek-r1-0528:free',
         messages: [
           {
             role: 'system',
@@ -57,7 +57,7 @@ export default async function handler(
             content: `请总结以下内容：\n\n${text}`
           }
         ],
-        max_tokens: 1000,
+        max_tokens: 10000,
         temperature: 0.7
       },
       {

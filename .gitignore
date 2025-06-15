@@ -3,3 +3,4 @@ dist
 .next
 .vscode
 .DS_Store
+.vercel
