@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Flomo AI 总结笔记",
+  "version": "1.0.0",
+  "description": "使用AI总结选中内容并保存到Flomo笔记",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "storage",
+    "notifications"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Flomo AI 笔记"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_page": "options.html"
+} 

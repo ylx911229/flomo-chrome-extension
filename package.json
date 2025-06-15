@@ -1,0 +1,18 @@
+{
+  "name": "flomo-chrome-extension",
+  "version": "1.0.0",
+  "description": "Chrome extension for summarizing content and saving to Flomo",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "build": "npm run build --workspaces",
+    "clean": "npm run clean --workspaces"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+} 

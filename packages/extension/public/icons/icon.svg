@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="64" cy="64" r="60" fill="#3B82F6" stroke="#1E40AF" stroke-width="2"/>
+  
+  <!-- 笔记本图标 -->
+  <rect x="32" y="28" width="64" height="72" rx="4" fill="white" stroke="#1E40AF" stroke-width="2"/>
+  
+  <!-- 笔记本内的线条 -->
+  <line x1="40" y1="44" x2="88" y2="44" stroke="#3B82F6" stroke-width="2"/>
+  <line x1="40" y1="56" x2="88" y2="56" stroke="#3B82F6" stroke-width="2"/>
+  <line x1="40" y1="68" x2="80" y2="68" stroke="#3B82F6" stroke-width="2"/>
+  <line x1="40" y1="80" x2="72" y2="80" stroke="#3B82F6" stroke-width="2"/>
+  
+  <!-- AI 符号 -->
+  <circle cx="84" cy="44" r="8" fill="#10B981"/>
+  <text x="84" y="48" text-anchor="middle" fill="white" font-size="8" font-weight="bold">AI</text>
+</svg> 

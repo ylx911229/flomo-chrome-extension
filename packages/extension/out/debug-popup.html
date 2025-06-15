@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flomo AI 笔记 - 调试版</title>
+    <style>
+        body {
+            width: 400px;
+            min-height: 300px;
+            margin: 0;
+            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #fff;
+        }
+        
+        .debug-section {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid #e9ecef;
+        }
+        
+        .debug-title {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .debug-info {
+            font-family: monospace;
+            font-size: 12px;
+            color: #6c757d;
+            word-break: break-all;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Flomo AI 笔记 - 调试版</h2>
+    
+    <div class="debug-section">
+        <div class="debug-title">页面信息</div>
+        <div class="debug-info">
+            URL: <span id="debug-url">获取中...</span><br>
+            标题: <span id="debug-title">获取中...</span>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <div class="debug-title">测试按钮</div>
+        <button class="btn" id="btn-debug-page">获取页面信息</button>
+        <button class="btn" id="btn-test-content">测试Content Script</button>
+        <button class="btn" id="btn-test-request">测试请求</button>
+    </div>
+    
+    <div class="debug-section">
+        <div class="debug-title">控制台日志</div>
+        <div class="debug-info">请打开开发者工具查看详细日志</div>
+    </div>
+
+    <script>
+        // Debug version of popup functionality
+        console.log('Debug popup script loaded');
+
+        let selectedText = 'Debug test text';
+        let pageUrl = '';
+        let pageTitle = '';
+
+        // Add debug function to window for manual testing
+        window.debugPageInfo = function() {
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                console.log('Debug: Current tabs:', tabs);
+                if (tabs[0]) {
+                    console.log('Debug: Tab URL:', tabs[0].url);
+                    console.log('Debug: Tab title:', tabs[0].title);
+                    console.log('Debug: Tab id:', tabs[0].id);
+                    
+                    pageUrl = tabs[0].url || '';
+                    pageTitle = tabs[0].title || '';
+                    
+                    document.getElementById('debug-url').textContent = pageUrl;
+                    document.getElementById('debug-title').textContent = pageTitle;
+                }
+            });
+        };
+
+        // Test content script communication
+        window.testContentScript = function() {
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                if (tabs[0]?.id) {
+                    console.log('Testing content script communication with tab:', tabs[0].id);
+                    chrome.tabs.sendMessage(tabs[0].id, { action: 'getCurrentSelection' }, (response) => {
+                        console.log('Content script response:', response);
+                        console.log('Runtime error:', chrome.runtime.lastError);
+                    });
+                }
+            });
+        };
+
+        // Test API request
+        window.testRequest = function() {
+            console.log('Testing API request with:', {
+                textLength: selectedText.length,
+                sourceUrl: pageUrl,
+                pageTitle: pageTitle
+            });
+            
+            chrome.storage.sync.get(['openrouterKey', 'flomoApiUrl', 'serverUrl'], async (result) => {
+                try {
+                    const serverUrl = result.serverUrl || 'http://localhost:3001';
+                    
+                    const requestData = {
+                        text: selectedText,
+                        openrouterKey: result.openrouterKey || 'test-key',
+                        flomoApiUrl: result.flomoApiUrl || 'test-url',
+                        sourceUrl: pageUrl,
+                        pageTitle: pageTitle
+                    };
+                    
+                    console.log('Sending request data:', requestData);
+                    
+                    const response = await fetch(`${serverUrl}/api/summarize-to-flomo`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestData)
+                    });
+                    
+                    const data = await response.json();
+                    console.log('Response:', data);
+                    
+                } catch (error) {
+                    console.error('Request error:', error);
+                }
+            });
+        };
+
+        // Initialize
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            console.log('Initial tabs query result:', tabs);
+            
+            if (tabs && tabs.length > 0) {
+                const tab = tabs[0];
+                console.log('Active tab info:', {
+                    id: tab.id,
+                    url: tab.url,
+                    title: tab.title,
+                    status: tab.status
+                });
+                
+                pageUrl = tab.url || '';
+                pageTitle = tab.title || '';
+                
+                document.getElementById('debug-url').textContent = pageUrl;
+                document.getElementById('debug-title').textContent = pageTitle;
+                
+                console.log('Set pageUrl to:', pageUrl);
+                console.log('Set pageTitle to:', pageTitle);
+            } else {
+                console.error('No active tabs found!');
+            }
+        });
+
+                 console.log('Debug functions loaded');
+
+         // Add event listeners after DOM is loaded
+         document.addEventListener('DOMContentLoaded', function() {
+             console.log('DOM loaded, adding event listeners');
+             
+             document.getElementById('btn-debug-page').addEventListener('click', function() {
+                 console.log('Debug page info button clicked');
+                 debugPageInfo();
+             });
+             
+             document.getElementById('btn-test-content').addEventListener('click', function() {
+                 console.log('Test content script button clicked');
+                 testContentScript();
+             });
+             
+             document.getElementById('btn-test-request').addEventListener('click', function() {
+                 console.log('Test request button clicked');
+                 testRequest();
+             });
+         });
+    </script>
+</body>
+</html> 

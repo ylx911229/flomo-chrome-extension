@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flomo 插件测试页面</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .selectable-text {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+        }
+        .instructions {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .debug-info {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Flomo Chrome 扩展测试页面</h1>
+    
+    <div class="instructions">
+        <h3>📋 测试说明：</h3>
+        <ol>
+            <li>选中下面任意一段文本</li>
+            <li>点击Chrome扩展图标打开弹窗</li>
+            <li>查看是否能检测到选中的文本</li>
+            <li>打开浏览器控制台查看调试信息</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h3>🔤 测试文本 1（中文）：</h3>
+        <div class="selectable-text">
+            人工智能（AI）技术正在快速发展，ChatGPT、Claude等大语言模型的出现标志着AI进入了一个新的时代。这些模型不仅能够理解和生成自然语言，还能够协助人们完成各种复杂的任务，从写作、编程到数据分析等。随着技术的不断进步，AI将在更多领域发挥重要作用，改变我们的工作和生活方式。
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>🔠 测试文本 2（英文）：</h3>
+        <div class="selectable-text">
+            The rapid advancement of artificial intelligence has transformed how we interact with technology. Machine learning algorithms now power everything from recommendation systems to autonomous vehicles. As these technologies continue to evolve, they promise to unlock new possibilities in healthcare, education, and scientific research.
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>📊 测试文本 3（技术内容）：</h3>
+        <div class="selectable-text">
+            JavaScript中的异步编程是现代Web开发的核心概念。从最初的回调函数（callbacks）到Promise，再到async/await语法，JavaScript提供了多种处理异步操作的方式。理解这些概念对于构建高性能的Web应用程序至关重要。事件循环（Event Loop）机制确保了JavaScript的单线程执行模型能够高效处理并发操作。
+        </div>
+    </div>
+
+    <div class="debug-info" id="debug-info">
+        <strong>调试信息：</strong><br>
+        <span id="selection-status">未选中任何文本</span>
+    </div>
+
+    <script>
+        // 监听文本选择
+        document.addEventListener('mouseup', function() {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+            const debugInfo = document.getElementById('selection-status');
+            
+            if (selectedText) {
+                debugInfo.innerHTML = `已选中文本: "${selectedText.substring(0, 50)}${selectedText.length > 50 ? '...' : ''}" (${selectedText.length} 字符)`;
+                console.log('页面选中文本:', selectedText);
+            } else {
+                debugInfo.innerHTML = '未选中任何文本';
+            }
+        });
+
+        // 监听扩展消息（如果有的话）
+        console.log('测试页面已加载，等待扩展通信...');
+    </script>
+</body>
+</html> 
