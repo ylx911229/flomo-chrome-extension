@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flomo AI 笔记 - Chrome 插件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .features-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Screenshots Section */
+        .screenshots {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .screenshots h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .screenshots-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .screenshot-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .screenshot-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .screenshot-caption {
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Download Section */
+        .download {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .download h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .download p {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .download-options {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .download-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 250px;
+        }
+
+        .download-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-card p {
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        /* Guide Section */
+        .guide {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .guide h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .guide-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        .guide-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .guide-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .guide-step h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .guide-step p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+                 /* Contact Section */
+         .contact {
+             padding: 6rem 0;
+             background: #f8f9fa;
+         }
+
+         .contact h2 {
+             text-align: center;
+             font-size: 2.5rem;
+             margin-bottom: 1rem;
+             color: #333;
+         }
+
+         .contact-subtitle {
+             text-align: center;
+             font-size: 1.1rem;
+             color: #666;
+             margin-bottom: 4rem;
+         }
+
+         .contact-grid {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+             gap: 2rem;
+         }
+
+         .contact-card {
+             background: white;
+             padding: 2rem;
+             border-radius: 12px;
+             text-align: center;
+             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+             transition: transform 0.3s;
+         }
+
+         .contact-card:hover {
+             transform: translateY(-5px);
+         }
+
+         .contact-icon {
+             font-size: 3rem;
+             margin-bottom: 1rem;
+         }
+
+         .contact-card h3 {
+             font-size: 1.3rem;
+             margin-bottom: 1rem;
+             color: #333;
+         }
+
+         .contact-card p {
+             color: #666;
+             margin-bottom: 1.5rem;
+             line-height: 1.6;
+         }
+
+         .qr-code {
+             margin-top: 1rem;
+         }
+
+         .qr-code img {
+             max-width: 150px;
+             border: 1px solid #eee;
+             border-radius: 8px;
+         }
+
+         .qr-code p {
+             margin-top: 0.5rem;
+             font-size: 0.9rem;
+             color: #888;
+         }
+
+         .contact-email {
+             color: #667eea;
+             text-decoration: none;
+             font-weight: 500;
+             padding: 0.5rem 1rem;
+             border: 2px solid #667eea;
+             border-radius: 25px;
+             display: inline-block;
+             transition: all 0.3s;
+         }
+
+         .contact-email:hover {
+             background: #667eea;
+             color: white;
+         }
+
+         /* Source Section */
+         .source {
+             padding: 6rem 0;
+             background: white;
+         }
+
+         .source h2 {
+             text-align: center;
+             font-size: 2.5rem;
+             margin-bottom: 1rem;
+             color: #333;
+         }
+
+         .source-subtitle {
+             text-align: center;
+             font-size: 1.1rem;
+             color: #666;
+             margin-bottom: 4rem;
+         }
+
+         .source-content {
+             display: grid;
+             grid-template-columns: 1fr 1fr;
+             gap: 4rem;
+             align-items: start;
+         }
+
+         .source-info {
+             text-align: center;
+         }
+
+         .source-icon {
+             margin-bottom: 2rem;
+         }
+
+         .source-info h3 {
+             font-size: 1.5rem;
+             margin-bottom: 1rem;
+             color: #333;
+         }
+
+         .source-info p {
+             color: #666;
+             margin-bottom: 2rem;
+             line-height: 1.6;
+         }
+
+         .source-stats {
+             display: flex;
+             justify-content: center;
+             gap: 2rem;
+             margin-bottom: 2rem;
+         }
+
+         .source-stats .stat {
+             text-align: center;
+         }
+
+         .source-stats .stat-number {
+             font-size: 1.2rem;
+             font-weight: bold;
+             display: block;
+             color: #333;
+         }
+
+         .source-stats .stat-label {
+             font-size: 0.9rem;
+             color: #666;
+         }
+
+         .source-buttons {
+             display: flex;
+             gap: 1rem;
+             justify-content: center;
+             flex-wrap: wrap;
+         }
+
+         .source-buttons .btn {
+             display: flex;
+             align-items: center;
+         }
+
+         .source-features h4 {
+             font-size: 1.3rem;
+             margin-bottom: 1.5rem;
+             color: #333;
+         }
+
+         .source-list {
+             list-style: none;
+             padding: 0;
+         }
+
+         .source-list li {
+             margin-bottom: 1rem;
+             padding: 0.5rem 0;
+             color: #666;
+             line-height: 1.6;
+         }
+
+         .source-list li strong {
+             color: #333;
+         }
+
+         /* Footer */
+         .footer {
+             background: #333;
+             color: white;
+             padding: 3rem 0 1rem;
+         }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #555;
+            padding-top: 1rem;
+            text-align: center;
+            color: #ccc;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .stats {
+                gap: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+
+                         .download-options {
+                 flex-direction: column;
+                 align-items: center;
+             }
+
+             .contact-grid {
+                 grid-template-columns: 1fr;
+             }
+
+             .source-content {
+                 grid-template-columns: 1fr;
+                 gap: 2rem;
+             }
+
+             .source-buttons {
+                 flex-direction: column;
+                 align-items: center;
+             }
+         }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">Flomo AI 笔记</div>
+                         <ul class="nav-links">
+                 <li><a href="#features">功能特色</a></li>
+                 <li><a href="#screenshots">产品截图</a></li>
+                 <li><a href="#download">立即下载</a></li>
+                 <li><a href="#guide">使用指南</a></li>
+                 <li><a href="#contact">联系我</a></li>
+                 <li><a href="https://github.com/ylx911229/flomo-chrome-extension" target="_blank">源码地址</a></li>
+             </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>智能总结网页内容<br>一键保存到Flomo</h1>
+                <p>基于AI的Chrome扩展程序，自动总结选中文本内容，智能生成笔记摘要，让重要信息轻松保存到你的Flomo知识库。</p>
+                <div class="cta-buttons">
+                    <a href="#download" class="btn btn-primary">立即下载</a>
+                    <a href="#screenshots" class="btn btn-secondary">查看截图</a>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">用户下载</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">4.8★</span>
+                        <span class="stat-label">用户评分</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">Chrome</span>
+                        <span class="stat-label">支持平台</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2>功能特色</h2>
+            <p class="features-subtitle">强大的AI分析能力，让网页阅读变得更有价值</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI智能总结</h3>
+                    <p>基于先进的AI技术分析选中文本，自动生成精炼摘要，提取核心观点和关键信息，让碎片化阅读变得高效。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>一键快速保存</h3>
+                    <p>选中任意网页文本，右键或使用快捷键即可快速总结并保存到Flomo，无需切换页面，保持专注阅读体验。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>智能内容识别</h3>
+                    <p>自动识别文本类型和上下文，针对不同内容提供最佳的总结策略，确保重要信息不遗漏。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Flomo无缝集成</h3>
+                    <p>与Flomo深度集成，自动添加来源链接和时间戳，构建完整的知识网络，方便后续回顾和关联。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>灵活配置</h3>
+                    <p>支持多种AI服务配置，可自定义总结风格和长度，满足不同用户的个性化需求。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>隐私安全</h3>
+                    <p>本地处理用户配置，仅在总结时发送必要数据，保护用户隐私，确保数据安全。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section class="screenshots" id="screenshots">
+        <div class="container">
+            <h2>产品截图</h2>
+            <p class="screenshots-subtitle">直观了解插件界面和使用体验</p>
+            <div class="screenshots-grid">
+                <div class="screenshot-item">
+                    <img src="https://xhs-1346759020.cos.ap-guangzhou.myqcloud.com/uploads/chanpin1.png" alt="插件设置页面"/>
+                    <div class="screenshot-caption">插件设置页面</div>
+                </div>
+                <div class="screenshot-item">
+                    <img src="https://xhs-1346759020.cos.ap-guangzhou.myqcloud.com/uploads/chanpin2.png" alt="文本总结弹窗"/>
+                    <div class="screenshot-caption">文本总结弹窗</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download" id="download">
+        <div class="container">
+            <h2>立即下载</h2>
+            <p>完全免费使用，让你的网页阅读体验更加高效</p>
+            <div class="download-options">
+                <div class="download-card">
+                    <h3>Chrome 网上应用店</h3>
+                    <p>推荐下载方式，自动更新，安全可靠</p>
+                    <a href="https://xhs-1346759020.cos.ap-guangzhou.myqcloud.com/uploads/flomo-chrome-extension.zip" target="_blank" class="btn btn-primary">前往下载</a>
+                </div>
+                <div class="download-card">
+                    <h3>离线安装包</h3>
+                    <p>适用于无法访问应用店的用户</p>
+                    <a href="https://xhs-1346759020.cos.ap-guangzhou.myqcloud.com/uploads/flomo-chrome-extension.zip" target="_blank" class="btn btn-secondary">下载 CRX</a>
+                </div>
+            </div>
+            <div style="margin-top: 3rem; padding: 2rem; background: rgba(255, 255, 255, 0.1); border-radius: 12px;">
+                <h4 style="margin-bottom: 1rem;">⚠️ 使用前必读</h4>
+                <p style="font-size: 0.9rem; line-height: 1.6;">
+                    本插件需要配置 OpenRouter API Key 和 Flomo API，请确保您已注册相关账户。
+                    插件仅处理您主动选择的文本内容，不会收集其他隐私信息。
+                    使用本插件即表示您同意遵守相关服务条款。
+                </p>
+                <p style="font-size: 0.9rem; margin-top: 1rem;">
+                    <strong>本项目完全免费开源，任何收费行为均与本项目无关。</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guide Section -->
+    <section class="guide" id="guide">
+        <div class="container">
+            <h2>快速上手指南</h2>
+            <p class="guide-subtitle">四步即可开始使用 Flomo AI Chrome 插件，简单易用</p>
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <h3>安装插件</h3>
+                    <p>从 Chrome 网上应用店安装插件，或下载离线安装包手动安装到浏览器中</p>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <h3>配置服务</h3>
+                    <p>在插件设置页面配置 OpenRouter API Key 和 Flomo API URL，支持多种AI服务</p>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <h3>选择文本</h3>
+                    <p>在任意网页中选中想要总结的文本内容，右键菜单或点击插件图标</p>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">4</div>
+                    <h3>一键保存</h3>
+                    <p>AI自动分析并生成摘要，确认后一键保存到您的 Flomo 笔记库中</p>
+                </div>
+            </div>
+        </div>
+         </section>
+
+     <!-- Contact Section -->
+     <section class="contact" id="contact">
+         <div class="container">
+             <h2>联系我们</h2>
+             <p class="contact-subtitle">有问题或建议？我们很乐意听到您的声音</p>
+             <div class="contact-grid">
+                 <div class="contact-card">
+                     <div class="contact-icon">💬</div>
+                     <h3>微信联系</h3>
+                     <p>扫描二维码添加开发者微信，获取技术支持和产品咨询</p>
+                     <div class="qr-code">
+                         <img src="https://xhs-1346759020.cos.ap-guangzhou.myqcloud.com/uploads/qrcode.jpeg" alt="微信二维码"/>
+                         <p>微信二维码</p>
+                     </div>
+                 </div>
+                 <div class="contact-card">
+                     <div class="contact-icon">📧</div>
+                     <h3>邮箱联系</h3>
+                     <p>通过邮件与我们联系，我们会尽快回复您的问题</p>
+                     <a href="mailto:869076940@qq.com" class="contact-email">869076940@qq.com</a>
+                 </div>
+                 <div class="contact-card">
+                     <div class="contact-icon">💡</div>
+                     <h3>问题反馈</h3>
+                     <p>发现bug或有功能建议？欢迎在GitHub提交Issue</p>
+                     <a href="https://github.com/ylx911229/flomo-chrome-extension/issues" target="_blank" class="btn">前往GitHub</a>
+                 </div>
+             </div>
+         </div>
+     </section>
+ 
+     <!-- Footer -->
+     <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Flomo AI 笔记</h3>
+                    <p>基于AI技术的智能网页摘要工具，让知识管理更高效</p>
+                </div>
+                <div class="footer-section">
+                    <h3>产品功能</h3>
+                    <ul>
+                        <li><a href="#features">功能特色</a></li>
+                        <li><a href="#screenshots">产品截图</a></li>
+                        <li><a href="#download">免费下载</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>开发相关</h3>
+                    <ul>
+                        <li><a href="https://github.com/ylx911229/flomo-chrome-extension" target="_blank">GitHub源码</a></li>
+                        <li><a href="#">版本历史</a></li>
+                        <li><a href="#">问题反馈</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>帮助支持</h3>
+                    <ul>
+                        <li><a href="#guide">使用指南</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">技术支持</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Flomo AI 笔记. All rights reserved. | MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 导航栏背景透明度
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html> 
